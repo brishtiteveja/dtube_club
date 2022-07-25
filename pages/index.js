@@ -10,7 +10,8 @@ export default function Home({ videos }) {
   return (
     <div className="h-screen bg-gray-100 overflow-hidden">
       <Head>
-        <title>Dtube</title>
+        <link rel="shortcut icon" href="assets/DTube_files/images/logos/dtube.png" />
+        <title>DTube</title>
       </Head>
 
       <Header />

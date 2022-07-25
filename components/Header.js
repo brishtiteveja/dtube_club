@@ -27,7 +27,7 @@ function Header() {
                 <a href="#" className="">
                     <img
                         className="flex bg-slate-300 rounded-xl shadow-lg p-2 "
-                        src="assets/DTube_Black.svg"
+                        src="assets/DTube_files/images/DTube_Black.svg"
                         alt="logo" 
                         width={200} 
                         height={100}
