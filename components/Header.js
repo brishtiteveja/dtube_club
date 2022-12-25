@@ -24,28 +24,19 @@ function Header() {
       <div className="flex m-1 justify-between">
             {/* Left */}
             <div className="flex">
-                <a href="#" className="">
-                    <img
-                        className="flex bg-slate-300 rounded-xl shadow-lg p-2 "
-                        src="assets/DTube_files/images/DTube_Black.svg"
-                        alt="logo" 
-                        width={200} 
-                        height={100}
-                    />
-                </a>
-                <a href="#" className="flex p-4">
-                  <h1 className="">
-                    <b>
-                      0.102$
-                    </b>
-                  </h1>
-                </a>
+                    <Image
+                        className="flex"
+                        src="/assets/DTube_files/images/DTube_Black.svg"
+                        alt="dtube" 
+                        width={100} 
+                        height={50}
+                    /> 
             </div>
 
             {/* center  */}
-            <div className="">
+            <div className="flex">
               <SearchIcon className="hidden h-6 text-gray-600" />
-              <input className="flex p-5 m-3 h-10 bg-white outline-none placeholder-gray-500"
+              <input className="flex p-5 m-3 ml-60 h-10 w-96 bg-white outline-none placeholder-gray-500"
             placeholder="Search Dtube"/>
             </div>
 

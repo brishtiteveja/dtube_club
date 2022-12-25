@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 import Head from "next/head";
-import Feed from "../components/Feed";
+import FeedController from "../components/FeedController";
 import Header from "../components/Header";
 
 export default function Home({ videos }) {
@@ -9,26 +9,25 @@ export default function Home({ videos }) {
 
   return (
     <div className="h-screen bg-gray-100 overflow-hidden">
+      {/* head */}
       <Head>
         <link rel="shortcut icon" href="assets/DTube_files/images/logos/dtube.png" />
         <title>DTube</title>
       </Head>
 
+      {/* header */}
       <Header />
 
-      <main className="flex-col">
-        {/* <Feed /> */}
-          { 
-            videos && videos.map( (video) => {
-              return(
-                <h1 className="p-1">
-                  {video.author}
-                </h1> 
-                
-              )
-            })
-          }
+      {/* left sidebar */}
+      
+      {/* feed */}
+      <main>
+        <FeedController videos={videos}/>
       </main>
+
+      {/* right sidebar */}
+
+      {/* bottom pane */}
     </div>
   );
 }
