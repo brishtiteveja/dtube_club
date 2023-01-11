@@ -51,7 +51,7 @@ function Header() {
       privatekey: e.target.privatekey,
       //   email: 'test@test.com',
       //   password: '1234',
-      callbackUrl: 'http://localhost:3000',
+      callbackUrl: process.env.NEXTAUTH_URL,
       redirect: false,
     })
 
@@ -64,7 +64,7 @@ function Header() {
 
     console.log('submitted!');
     signOut({
-      callbackUrl: 'http://localhost:3000',
+      callbackUrl: process.env.NEXTAUTH_URL,
       redirect: false,
     })
 
