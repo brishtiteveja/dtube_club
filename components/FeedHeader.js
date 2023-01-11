@@ -1,4 +1,5 @@
 import React from "react";
+import {useState} from "react";
 
 import HeaderIcon from './HeaderIcon';
 import {
@@ -14,34 +15,39 @@ import {
 
 import FeedHeaderMenu from "./FeedHeaderMenu";
 
-const FeedHeader = ( {setContent, setLayout}) => {
-
+const FeedHeader = ( {contentType, setContentType, setContent, setLayout}) => {
     // Layout controller
     const handleGridLayout = () => {
-        console.log("grid")
         setLayout("grid");
     }
 
     const handleListLayout = () => {
-        console.log("list")
         setLayout("list");
     }
 
     const handleBlogLayout = () => {
-        console.log("blog")
         setLayout("blog");
+    }
+
+    const handleReloadContent = () => {
+        const AVALON_API_URL =  "https://avalon.d.tube/"
+        const REQUEST_URL = `${AVALON_API_URL}${contentType}`
+
+        axios.get(REQUEST_URL).then(function (response) {
+            setContent(response.data)
+        });
     }
 
     return (
         <header className="flex flex-grow bg-white p-2 rounded-xl space-x-20 justify-end">
             {/* left */}
-            <FeedHeaderMenu setContent={setContent}/>
+            <FeedHeaderMenu contentType={contentType} setContentType={setContentType} setContent={setContent}/>
 
             {/* center */}
             <div className="flex border-2 rounded-xl float-right">
                 {/* Right */}
                 <div className="flex items-center">
-                    <HeaderIcon Icon={RefreshIcon} />
+                    <HeaderIcon Icon={RefreshIcon} onClick={handleReloadContent}/>
                 </div>
             </div> 
 

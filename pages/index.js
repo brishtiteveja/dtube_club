@@ -1,12 +1,9 @@
-import { getSession } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import FeedController from "../components/FeedController";
 import Header from "../components/Header";
 
-export default function Home({ videos }) {
-  
-  // if (!session) return <Login />;
-
+export default function Home({ videos, session }) {
   return (
     <div className="h-screen bg-gray-100 overflow-hidden">
       {/* head */}
@@ -15,15 +12,17 @@ export default function Home({ videos }) {
         <title>DTube</title>
       </Head>
 
-      {/* header */}
-      <Header />
+      <SessionProvider session={session} refetchInterval={60}>
+        {/* header */}
+        <Header />
 
-      {/* left sidebar */}
+        {/* left sidebar */}
       
-      {/* feed */}
-      <main>
-        <FeedController videos={videos}/>
-      </main>
+        {/* feed */}
+        <main>
+          <FeedController videos={videos}/>
+        </main>
+      </SessionProvider>
 
       {/* right sidebar */}
 
@@ -33,7 +32,7 @@ export default function Home({ videos }) {
 }
 
 export async function getServerSideProps(context) {
-  // const session = await getSession(context);
+  const session = await getSession(context);
 
   const AVALON_API_URL =  "https://avalon.d.tube/"
 
@@ -47,6 +46,6 @@ export async function getServerSideProps(context) {
 
   let videoItems = results
   return {
-    props: { videos: videoItems },
+    props: { videos: videoItems, session: session } 
   };
 }

@@ -1,30 +1,83 @@
-import React, { useEffect } from "react";
+/* eslint-disable @next/next/no-img-element */
+import React from "react";
 import { useRef, useState } from "react";
 
-import { Box, Center, Heading,SimpleGrid } from '@chakra-ui/layout';
-
+import { Box, Center, Heading, SimpleGrid } from '@chakra-ui/layout';
+import {Geographies, Geography, SimpleMap, ComposableMap, ZoomableGroup } from 'react-simple-maps'
 
 function Feed({ videos, layout }) {
   const [loading, setLoading] = useState(true);
   const gridIframe = useRef(null);
 
-  const videoSl = videos.slice(0,20)
+  const videoSl = videos
+  const geoUrl =
+  "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
 
-  // useEffect( () => {
-  //   const player = new playerjsdyn.playerjs.Player('iframe')
-  //   console.log(player)
-  // })
-
+  const getThumbnailUrl = (video) => {
+    if (!video || !video.json)
+        return ''
+    if (video.json.thumbnailUrl)
+        return video.json.thumbnailUrl
+    if (video.json.files && video.json.files.btfs && video.json.files.btfs.img && video.json.files.btfs.img["118"])
+        return 'https://btfs.d.tube/btfs/' + video.json.files.btfs.img["118"]
+    if (video.json.files && video.json.files.ipfs && video.json.files.ipfs.img && video.json.files.ipfs.img["118"])
+        return 'https://snap1.d.tube/ipfs/' + video.json.files.ipfs.img["118"]
+    if (video.json.files && video.json.files.youtube)
+        return 'https://i.ytimg.com/vi/' + video.json.files.youtube + '/mqdefault.jpg'
+  
+    if (video.json.ipfs && video.json.ipfs.snaphash) return 'https://snap1.d.tube/ipfs/' + video.json.ipfs.snaphash
+    if (video.json.info && video.json.info.snaphash) return 'https://snap1.d.tube/ipfs/' + video.json.info.snaphash
+        // console.log('Found video with no thumbnail!!', video)
+    return ''
+  }
 
   return (
-    <div className="flex-grow h-screen pb-44 pt-6 ml-20 mr-4 xl:mr-40 overflow-y-auto scrollbar-hide">
-      <div className="mx-auto "> 
-      {/* max-w-md md:max-w-lg lg:max-w-2xl */}
-
+    <div className="flex-grow h-screen ml-10 mr-10 pl-10 pr-10 overflow-y-auto scrollbar-hide">
+      <div className="mx-auto"> 
         {
           (
             () => {
-              if (layout === 'grid') {
+              if (videoSl && videoSl.items) {
+                return (
+                  <div>
+                    <SimpleGrid 
+                      columns={4} 
+                      spacingx='100px'
+                      className="p-5 mt-5 bg-white rounded-2xl shadow-md"
+                    >
+                      {videoSl.items.map(video => (
+                          <div 
+                            key={video.id}
+                            className="p-5 m-5 bg-white rounded-2xl shadow-md"
+                          >
+                            <a href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" rel="noreferrer">
+                              <img src={video.snippet.thumbnails.medium.url} alt={video.snippet.title} />
+                              <h3>{video.snippet.title}</h3>
+                              {/* <p>{video.snippet.description}</p> */}
+                            </a>
+                          </div>
+                      ))}
+                    </SimpleGrid>
+
+                    <ComposableMap
+                      onClick={(event) => {
+                        console.log(event)
+                      }}
+                    >
+                      <ZoomableGroup center={[0, 0]} zoom={1}>
+                        <Geographies geography={geoUrl}>
+                          {({ geographies }) =>
+                            geographies.map((geo) => (
+                              <Geography key={geo.rsmKey} geography={geo} />
+                            ))
+                          }
+                        </Geographies>
+                      </ZoomableGroup>
+                    </ComposableMap>
+                  </div>
+                )
+              }
+              else if (layout === 'grid') {
                 return(
                   <Box
                     width="100%" mx="auto" my={4}
@@ -41,15 +94,35 @@ function Feed({ videos, layout }) {
                                           hover:scale-110 rounded-2xl"
                               key={video._id} 
                             >
-                              <iframe 
-                                key={video._id}
-                                src={`https://emb.d.tube/#!/${video._id}`}
-                                // className="flex"
-                                frameBorder='0'
-                                allow='autoplay; encrypted-media'
-                                title={video.json.title}
-                                // onLoad={handleIframe}
-                              />
+                              {/* videosnap */}
+                              <div className="flex flex-col">
+                                  <div>
+                                      {/* videosnaplink */}
+                                      <a href={`https://d.tube/#!/v/${video._id}`} target="_blank" rel="noreferrer" >
+                                        {/* videosnapimage */}
+                                        <img 
+                                          src={getThumbnailUrl(video)}
+                                          className="flex rounded-2xl m-5"
+                                          alt="image"
+                                          height="400"
+                                          width="400"
+                                        />
+                                      </a>
+                                      {/* video title */}
+                                      <div className="ml-6 -mt-5 max-w-sm">
+                                        <span className="font-semibold font-sans"> {video.json.title} </span>
+                                      </div>
+                                  </div>
+
+                                  {/* video author */}
+                                  <div>
+                                    <a href={`https://d.tube/#!/c/${video.author}`} target="_blank" rel="noreferrer" >
+                                      <div className="ml-6">
+                                        <span className="font-light text-slate-400"> {video.author} </span>
+                                      </div>
+                                    </a>
+                                  </div>
+                              </div>
                             </Box>
                           );
                         })
@@ -74,15 +147,35 @@ function Feed({ videos, layout }) {
                                           hover:scale-110 rounded-2xl"
                               key={video._id} 
                             >
-                              <iframe 
-                                key={video._id}
-                                src={`https://emb.d.tube/#!/${video._id}`}
-                                className="flex h-30 float-right"
-                                frameBorder='0'
-                                allow='autoplay; encrypted-media'
-                                title={video.json.title}
-                                // onLoad={handleIframe}
-                              />
+                              {/* videosnap */}
+                              <div className="flex flex-col">
+                                  <div>
+                                      {/* videosnaplink */}
+                                      <a href={`https://d.tube/#!/v/${video._id}`} target="_blank" rel="noreferrer" >
+                                        {/* videosnapimage */}
+                                        <img 
+                                          src={getThumbnailUrl(video)}
+                                          className="flex rounded-2xl m-5"
+                                          alt="image"
+                                          height="400"
+                                          width="400"
+                                        />
+                                      </a>
+                                      {/* video title */}
+                                      <div className="ml-6 -mt-5 max-w-sm">
+                                        <span className="font-semibold font-sans"> {video.json.title} </span>
+                                      </div>
+                                  </div>
+
+                                  {/* video author */}
+                                  <div>
+                                    <a href={`https://d.tube/#!/c/${video.author}`} target="_blank" rel="noreferrer" >
+                                      <div className="ml-6">
+                                        <span className="font-light text-slate-400"> {video.author} </span>
+                                      </div>
+                                    </a>
+                                  </div>
+                              </div>
                             </Box>
                           );
                         })
@@ -104,18 +197,35 @@ function Feed({ videos, layout }) {
                           return (
                             <Box 
                               className="cursor-pointer overflow-x p-3 transition duration-200 transform ease-in 
-                                          hover:scale-110 rounded-2xl"
+                                          hover:scale-110 rounded-2xl "
                               key={video._id} 
                             >
-                              <iframe 
-                                key={video._id}
-                                src={`https://emb.d.tube/#!/${video._id}`}
-                                className="flex h-30 p-5 float-right"
-                                frameBorder='0'
-                                allow='autoplay; encrypted-media'
-                                title={video.json.title}
-                                // onLoad={handleIframe}
-                              />
+                              {/* videosnap */}
+                              <div className="flex flex-col float-right">
+                                  {/* videosnaplink */}
+                                  <div>
+                                      <a href={`https://d.tube/#!/v/${video._id}`} target="_blank" rel="noreferrer" >
+                                        {/* videosnapimage */}
+                                        <img 
+                                          src={getThumbnailUrl(video)}
+                                          className="flex rounded-2xl m-5"
+                                          alt="image"
+                                          height="400"
+                                          width="400"
+                                        />
+                                      </a>
+                                  </div>
+
+                                  {/* video title */}
+                                  <div className="ml-6 -mt-5 max-w-sm">
+                                    <span className="font-semibold font-sans flex-wrap"> {video.json.title} </span>
+                                  </div>
+
+                                  {/* video author */}
+                                  <div className="ml-6">
+                                    <span className="font-light text-slate-600"> {video.author} </span>
+                                  </div>
+                              </div>
                             </Box>
                           );
                         })
