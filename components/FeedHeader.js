@@ -39,7 +39,7 @@ const FeedHeader = ( {contentType, setContentType, setContent, setLayout}) => {
     }
 
     return (
-        <header className="flex flex-grow bg-white p-2 rounded-xl space-x-20 justify-end">
+        <header className="flex flex-grow h-16 bg-white p-2 rounded-xl space-x-20 justify-end">
             {/* left */}
             <FeedHeaderMenu contentType={contentType} setContentType={setContentType} setContent={setContent}/>
 

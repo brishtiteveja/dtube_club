@@ -11,12 +11,14 @@ import HeaderIcon from "./HeaderIcon";
 
 import {
   SearchIcon,
-  UploadIcon,
 } from "@heroicons/react/outline";
+
+import { UploadIcon } from "@heroicons/react/solid"
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
 function Header() {
+  const [popupOpen, setPopupOpen] = useState(false);
   const { data:session, status } = useSession();
 
   const [loginButtonClickState, setLoginButtonClickState] = useState(true)
@@ -77,11 +79,11 @@ function Header() {
   })
 
   return (
-    <header className="sticky top-0 z-50 bg-green-600 flex items-center p-2 lg:px-5 shadow-md">
-      <div className="flex m-1 justify-center">
+    <header className="sticky top-0 z-50 bg-green-300 flex items-center p-2 lg:px-5 shadow-md">
+      <div className="flex flex-grow m-1 justify-evenly">
             {/* Left */}
             <div className="flex">
-              <a href="#" className="flex rounded-2xl bg-cyan-50 p-2 hover:animate-ping hover:bg-emerald-100">
+              <a href="#" className="flex rounded-md bg-cyan-50 p-2 hover:scale-125 hover:bg-emerald-100">
                     <Image
                         className="flex"
                         src="/assets/DTube_files/images/DTube_Black.svg"
@@ -94,18 +96,33 @@ function Header() {
 
             {/* center  */}
             <div className="flex">
-              <SearchIcon className="hidden h-6 text-gray-600" />
-              <input className="flex p-5 m-3 ml-60 h-10 w-96 bg-white outline-none placeholder-gray-500"
-            placeholder="Search Dtube"/>
+              {/* search bar */}
+              <div>
+                <SearchIcon className="hidden h-6 text-gray-600" />
+                <input className="flex p-5 m-3 ml-60 h-10 w-96 bg-white outline-none placeholder-gray-500"
+              placeholder="Search Dtube"/>
+              </div>
+              <div className="flex relative" onMouseEnter={() => setPopupOpen(true)} onMouseLeave={() => setPopupOpen(false)}>
+                <button className="flex">
+                  {/* <UploadIcon className="flex w-10 h-10 mt-3 ml-10 text-black bg-gray-400" /> */}
+                  <UploadIcon className="flex group-hover:opacity-0 w-16 h-12 mt-2 ml-5 bg-lime-400 rounded-md hover:animate-bounce" />
+                </button>
+                {/* {
+                  ({ popupOpen }) => 
+                  (
+                    <>
+                    <span class="flex opacity-100 w-32 h-30 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
+                          font-medium rounded-xl absolute left-1/2 -translate-x-1/2 translate-y-10">
+                            Upload your content
+                    </span>
+                    </>
+                  )
+                } */}
+              </div>
             </div>
 
             {/* right */}
-            <div className="flex flex-grow float-right">
-              <button className="flex btn btn-upload">
-                {/* <UploadIcon className="flex w-10 h-10 mt-3 ml-10 text-black bg-gray-400" /> */}
-                <HeaderIcon Icon={UploadIcon} className="bg-gray-400"/>
-              </button>
-
+            <div className="flex">
               {
                 !session && 
                     <div className="flex">
@@ -126,10 +143,33 @@ function Header() {
               {
                 session && session.user && session.user.json && session.user.json.profile &&
                     <div className="flex">
-                        <div className="flex ml-5">
-                          <p className="flex ml-5 mt-5 font-bold"> {processBalance(session.user.balance)}K</p>
-                          <p className="flex ml-5 mt-5 font-bold"> {processVotingPower(session.user.vt.v)}M</p>
+                        {/* balance and voting power */}
+                        <div className="flex">
+                          {/* balance */}
+                          <div className="group relative flex p-2 m-1 mt-3 h-10 rounded bg-orange-100 hover:bg-orange-400">
+                            <span className="font-bold text-rose-700"> 
+                              {processBalance(session.user.balance)}K 
+                            </span>
+                            <span className="ml-1">
+                              DTC
+                            </span>
+                            {/* <span class="flex group-hover:opacity-100 w-80 h-30 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
+                            font-medium rounded-xl absolute left-1/2 -translate-x-1/2 translate-y-5 opacity-0">
+                              DTUBE Coin balance - Hold more of it to generate more Voting Power. You can burn it to promote your videos and comments.
+                            </span> */}
+                          </div>
+
+                          {/* voting power */}
+                          <div className="group relative flex p-2 m-1 mt-3 h-10 rounded bg-orange-100 hover:bg-orange-400">
+                            <span className="font-bold text-blue-900"> {processVotingPower(session.user.vt.v)}M VP</span>
+                            {/* <span class="flex group-hover:opacity-100 w-80 h-35 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
+                            font-medium rounded-xl absolute left-1/2 -translate-x-1/2 translate-y-5 opacity-0">
+                              Voting Power - Bound to your account, you need to use it when you vote or add new content. Hold on to your DTCs to become more powerful and influent in the network!
+                            </span> */}
+
+                          </div>
                         </div>
+
                         <div className="flex ml-5 bg-slate-300 rounded-2xl p-0.5 hover:bg-red-200">
                           <button className="flex "
                             onClick={handleSignOut} 
