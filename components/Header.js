@@ -2,27 +2,54 @@
 import { useCallback } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
+import { useRouter } from 'next/router'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Image from "next/image";
-import HeaderIcon from "./HeaderIcon";
+import LanguageIcon from '@mui/icons-material/Language';
+import { Dropdown, Avatar } from 'flowbite-react'
+
+import Link from 'next/link'
 
 import {
   SearchIcon,
 } from "@heroicons/react/outline";
 
+
+import {
+  BellIcon,
+} from '@heroicons/react/solid'
+
 import { UploadIcon } from "@heroicons/react/solid"
 
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useStyleRegistry } from 'styled-jsx'
+import axios from 'axios'
+import { ArrowDropDownCircleOutlined } from '@mui/icons-material'
+import { Router } from 'next/router'
+import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/DropdownItem'
 
 function Header() {
-  const [popupOpen, setPopupOpen] = useState(false);
-  const { data:session, status } = useSession();
+  const router = useRouter()
+  const [popupOpen, setPopupOpen] = useState(false)
+  const { data:session, status } = useSession()
+
+  const [notifications, setNotifications] = useState([])
 
   const [loginButtonClickState, setLoginButtonClickState] = useState(true)
   const [isOpen, setIsOpen] = useState(false);
+
+  if (session && status === 'authenticated') {
+    setTimeout(() => {
+        const NOTIF_URL = "https://avalon.d.tube/notifications/" + session.user.username
+        axios.get(NOTIF_URL).then(function (response) {
+            setNotifications(response.data)
+            console.log(notifications)
+        }
+    )}, 30000)
+  }
 
   const processBalance = (b) => {
     var bl = b/(1000 *100)
@@ -60,9 +87,6 @@ function Header() {
   }
 
   const handleSignOut = async (e) => {
-    e.preventDefault();
-
-    console.log('submitted!');
     signOut({
       callbackUrl: process.env.NEXTAUTH_URL,
       redirect: false,
@@ -78,12 +102,16 @@ function Header() {
     setLoginButtonClickState(false)
   })
 
+  const handleConnectNetwork = () => {
+    router.push('network')
+  }
+
   return (
     <header className="sticky top-0 z-50 bg-green-300 flex items-center p-2 lg:px-5 shadow-md">
       <div className="flex flex-grow m-1 justify-evenly">
             {/* Left */}
             <div className="flex">
-              <a href="#" className="flex rounded-md bg-cyan-50 p-2 hover:scale-125 hover:bg-emerald-100">
+              <Link href="/" className="flex rounded-md bg-cyan-50 p-2 hover:scale-125 hover:bg-emerald-100">
                     <Image
                         className="flex"
                         src="/assets/DTube_files/images/DTube_Black.svg"
@@ -91,7 +119,7 @@ function Header() {
                         width={100} 
                         height={50}
                     /> 
-              </a>
+              </Link>
             </div>
 
             {/* center  */}
@@ -171,19 +199,90 @@ function Header() {
                         </div>
 
                         <div className="flex ml-5 bg-slate-300 rounded-2xl p-0.5 hover:bg-red-200">
-                          <button className="flex "
-                            onClick={handleSignOut} 
-                          >
+                          {/* <button className="flex ">
                             <img
                               className="flex rounded-full p-1 mt-2 h-12"
                               src={session.user.json.profile.avatar}
-                              alt="profile"
+                              alt="profile" 
                             /> 
-                            <p className = "flex p-1 mt-3">
-                              {session.user.username}
-                            </p>
-                          </button>
-                          
+                            
+                          </button>  */}
+
+                        <div className="">
+                          <Dropdown
+                            className=""
+                            arrowIcon={true}
+                            inline={true}
+                            label={
+                              <div className="flex">
+                                <img
+                                  className="flex rounded-full p-1 mt-2 h-12"
+                                  src={session.user.json.profile.avatar}
+                                  alt="profile" 
+                                /> 
+                                <span className = "flex p-1 mt-3">
+                                  {session.user.username}
+                                </span>
+                              </div>
+                            }>
+                              <div className="bg-red-100">
+                                <a href={`https://d.tube/#!/c/${session.user.username}`} target="_blank" rel="noreferrer">
+                                  <Dropdown.Item className="w-56 font-medium">
+                                      <span className="flex"> 
+                                        Profile
+                                      </span>
+                                  </Dropdown.Item>
+                                </a>
+                                {/* <Dropdown.Item className="w-56 font-medium" onClick={handleConnectNetwork}>
+                                  Connect Socials
+                                </Dropdown.Item> */}
+
+                                <Dropdown.Item className="w-56 font-medium">
+                                  Settings
+                                </Dropdown.Item>
+                                <Dropdown.Item className="w-56 font-medium" onClick={handleSignOut}>
+                                  Sign out
+                                </Dropdown.Item>
+                              </div>
+                            </Dropdown>
+                          </div>
+                        </div>
+
+                        {/* Add socials and accounts */}
+                        {/* <div className="flex">
+                          <Dropdown
+                            className="flex"
+                            arrowIcon={true}
+                            inline={true}
+                            label={
+                              <div className="flex">
+                                <LanguageIcon className="flex w-10 h-10 mt-3 ml-5 bg-gray-400 rounded-xl hover:cursor-pointer hover:bg-red-500 hover:scale-105">
+                                  Connect Account
+                                </LanguageIcon>
+                              </div>
+                            }>
+                              <Dropdown.Item className="w-56 font-medium" onClick={handleConnectNetwork}>
+                                <div className="flex">
+                                    <img src="/assets/DTube_files/images/logos/hive.png" alt="hive"
+                                          className="flex h-6 w-6 rounded-full cursor-pointer 
+                                          hover:opacity-90 hover:border-2 border-red-400" 
+                                    />
+                                    <span className="flex flex-grow mt-0.5 ml-2 justify-center">Hive</span>
+                                </div>
+                              </Dropdown.Item>
+
+                          </Dropdown>
+
+                        </div> */}
+                        
+
+                        {/* notifications */}
+                        <div className="flex group relative">
+                            <BellIcon className="flex w-10 h-10 mt-3 ml-5 bg-gray-400 rounded-xl hover:cursor-pointer hover:bg-red-500 hover:scale-105"/>
+                            <span class="flex group-hover:opacity-100 w-8 h-10 m-4 p-2 transition-opacity bg-red-500 px-1 text-black 
+                              font-medium rounded-xl absolute left-1/2 translate-x-1 -translate-y-5 opacity-0 font-bold justify-center">
+                                {notifications.length}
+                            </span>
                         </div>
                     </div>
               }
