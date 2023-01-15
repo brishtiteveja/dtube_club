@@ -3,6 +3,7 @@ import React from "react";
 import { useRef, useState } from "react";
 
 import { Box, Center, Heading, SimpleGrid } from '@chakra-ui/layout';
+import Link from "next/link"
 import {Geographies, Geography, SimpleMap, ComposableMap, ZoomableGroup } from 'react-simple-maps'
 
 function Feed({ videos, layout }) {
@@ -10,6 +11,7 @@ function Feed({ videos, layout }) {
   const gridIframe = useRef(null);
 
   const videoSl = videos
+  console.log(videos)
   const geoUrl =
   "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
 
@@ -98,7 +100,16 @@ function Feed({ videos, layout }) {
                               <div className="flex flex-col">
                                   <div>
                                       {/* videosnaplink */}
-                                      <a href={`https://d.tube/#!/v/${video._id}`} target="_blank" rel="noreferrer" >
+                                      {/* <a href={`https://d.tube/#!/v/${video._id}`} target="_blank" rel="noreferrer" > */}
+                                      <Link href={{
+                                          pathname: `/v/[author]/[id]`,
+                                          query: {
+                                            id: video._id, // pass the id 
+                                            author: video.author,
+                                            link: video.link
+                                          },
+                                        }}
+                                        as={`/v/${video._id}`} key={video._id}>
                                         {/* videosnapimage */}
                                         <img 
                                           src={getThumbnailUrl(video)}
@@ -107,7 +118,8 @@ function Feed({ videos, layout }) {
                                           height="400"
                                           width="400"
                                         />
-                                      </a>
+                                      </Link>
+                                      {/* </a> */}
                                       {/* video title */}
                                       <div className="ml-6 -mt-5 max-w-sm">
                                         <span className="font-semibold font-sans"> {video.json.title} </span>

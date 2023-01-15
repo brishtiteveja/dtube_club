@@ -1,19 +1,21 @@
-import React from "react";
-import {useState} from "react";
+import React from "react"
+import {useState} from "react"
 
-import HeaderIcon from './HeaderIcon';
+import { useEffect } from 'react'
+
+import HeaderIcon from './HeaderIcon'
 import {
     ChevronDownIcon,
     RefreshIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/solid"
 
 import {
     GridOnOutlined,
     ListOutlined,
     MenuOutlined,
-} from "@mui/icons-material";
+} from "@mui/icons-material"
 
-import FeedHeaderMenu from "./FeedHeaderMenu";
+import FeedHeaderMenu from "./FeedHeaderMenu"
 
 const FeedHeader = ( {contentType, setContentType, setContent, setLayout}) => {
     // Layout controller

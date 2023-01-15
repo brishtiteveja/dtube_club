@@ -25,11 +25,7 @@ import {
 import { UploadIcon } from "@heroicons/react/solid"
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useStyleRegistry } from 'styled-jsx'
 import axios from 'axios'
-import { ArrowDropDownCircleOutlined } from '@mui/icons-material'
-import { Router } from 'next/router'
-import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/DropdownItem'
 
 function Header() {
   const router = useRouter()
@@ -46,7 +42,6 @@ function Header() {
         const NOTIF_URL = "https://avalon.d.tube/notifications/" + session.user.username
         axios.get(NOTIF_URL).then(function (response) {
             setNotifications(response.data)
-            console.log(notifications)
         }
     )}, 30000)
   }
@@ -102,7 +97,7 @@ function Header() {
     setLoginButtonClickState(false)
   })
 
-  const handleConnectNetwork = () => {
+  const handleConnectHive = () => {
     router.push('network')
   }
 
@@ -249,7 +244,7 @@ function Header() {
                         </div>
 
                         {/* Add socials and accounts */}
-                        {/* <div className="flex">
+                        <div className="flex">
                           <Dropdown
                             className="flex"
                             arrowIcon={true}
@@ -261,7 +256,7 @@ function Header() {
                                 </LanguageIcon>
                               </div>
                             }>
-                              <Dropdown.Item className="w-56 font-medium" onClick={handleConnectNetwork}>
+                              <Dropdown.Item className="w-56 font-medium" onClick={handleConnectHive}>
                                 <div className="flex">
                                     <img src="/assets/DTube_files/images/logos/hive.png" alt="hive"
                                           className="flex h-6 w-6 rounded-full cursor-pointer 
@@ -273,7 +268,7 @@ function Header() {
 
                           </Dropdown>
 
-                        </div> */}
+                        </div>
                         
 
                         {/* notifications */}

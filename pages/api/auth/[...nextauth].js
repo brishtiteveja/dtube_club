@@ -1,5 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google"
+import TwitterProvider from "next-auth/providers/twitter"
 
 import avalon from 'javalon';
 avalon.init({api: 'https://avalon.d.tube'})
@@ -64,6 +66,14 @@ export default NextAuth({
                 }
               },
         }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID,
+            clientSecret: process.env.GOOGLE_SECRET,
+          }),
+        TwitterProvider({
+            clientId: process.env.TWITTER_ID,
+            clientSecret: process.env.TWITTER_SECRET,
+    }),
     ],
     secret: process.env.JWT_SECRET,
     session: {
