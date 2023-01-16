@@ -6,6 +6,8 @@ import { Box, Center, Heading, SimpleGrid } from '@chakra-ui/layout';
 import Link from "next/link"
 import {Geographies, Geography, SimpleMap, ComposableMap, ZoomableGroup } from 'react-simple-maps'
 
+import { FlashOn } from "@mui/icons-material";
+
 function Feed({ videos, layout }) {
   const [loading, setLoading] = useState(true);
   const gridIframe = useRef(null);
@@ -14,6 +16,32 @@ function Feed({ videos, layout }) {
   console.log(videos)
   const geoUrl =
   "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
+
+  const getTimeDuration = (dur) => {
+    var v = dur / 60
+    var h, m, s, t 
+    if (v >=60) {
+      h = m / 60
+      h = h.toFixed(0)
+      m = h / 60
+      m = m.toFixed(0)
+      s = h % 60
+      s = s.toFixed(0)
+
+      t = h + ":" + m + ":" + s 
+    } else {
+      // m = v
+      // m = m.toFixed(0)
+      // s = v % 60
+      // s = s.toFixed(1)
+
+      // t = m + ":" + s 
+      t = new Date(dur * 1000).toISOString().substring(14, 19)
+    }
+
+    return t
+
+  }
 
   const getThumbnailUrl = (video) => {
     if (!video || !video.json)
@@ -111,13 +139,27 @@ function Feed({ videos, layout }) {
                                         }}
                                         as={`/v/${video._id}`} key={video._id}>
                                         {/* videosnapimage */}
-                                        <img 
-                                          src={getThumbnailUrl(video)}
-                                          className="flex rounded-2xl m-5"
-                                          alt="image"
-                                          height="400"
-                                          width="400"
-                                        />
+                                        <div className="flex-col">
+                                            <img 
+                                              src={getThumbnailUrl(video)}
+                                              className="flex rounded-2xl m-5"
+                                              alt="image"
+                                              height="400"
+                                              width="400"
+                                            />
+
+                                            <div>
+                                            <span className="absolute -mt-14  ml-10 bg-black opacity-50 text-white p-0.5 rounded-sm">
+                                              { getTimeDuration(video.json.dur) }
+                                            </span>
+
+                                            <span className="absolute -mt-14  ml-56 bg-black opacity-50 text-white p-0.5 rounded-sm">
+                                              <FlashOn className="scale-75" /> { (video.votes.reduce((a, c) => ({ vt: a.vt + c.vt })).vt / 1000000).toFixed(1) } M
+                                            </span>
+
+                                            </div>
+
+                                        </div>
                                       </Link>
                                       {/* </a> */}
                                       {/* video title */}
