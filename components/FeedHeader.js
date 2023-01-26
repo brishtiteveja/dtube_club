@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material"
 
 import FeedHeaderMenu from "./FeedHeaderMenu"
+import axios from "axios"
 
 const FeedHeader = ( {contentType, setContentType, setContent, setLayout}) => {
     // Layout controller
