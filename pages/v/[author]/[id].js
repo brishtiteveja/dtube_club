@@ -8,9 +8,14 @@ import Header from "../../../components/Header";
 import { getSession, SessionProvider } from "next-auth/react";
 import { Box, Center, Heading,SimpleGrid } from '@chakra-ui/layout';
 
+import Draggable from "react-draggable";
+import { Resizable, ResizableBox } from "react-resizable";
+
 
 import ReactPlayer from "react-player"
 import { CONTEXT } from 'player.js';
+import { UploadIcon } from '@heroicons/react/solid';
+import PanToolRoundedIcon from '@mui/icons-material/PanToolRounded';
 
 const Video = ({ videos, session }) => {
   const router = useRouter();
@@ -56,19 +61,49 @@ const Video = ({ videos, session }) => {
                 {/* Left */}
 
                 {/* center */}
-                <Box maxWidth="720px" mx="auto" p={4} borderRadius="lg" boxShadow="2xl" my={8}>
+                {/* <Box maxWidth="720px" mx="auto" p={4} borderRadius="lg" boxShadow="2xl" my={8}> */}
                     {/* <ReactPlayer 
                     url="https://emb.d.tube/#!/yann0975/apgf7d6wxw1"
                     playing={true}
                     controls={true}
                     /> */}
+                    <div className="flex justify-center ml-96 mt-16">
+                <Draggable handle=".handle">
+                        <ResizableBox>
+                            {/* video player */}
+                            <div>
+                                {/* <ReactPlayer 
+                                url="https://emb.d.tube/#!/yann0975/apgf7d6wxw1"
+                                playing={true}
+                                controls={true}
+                                /> */}
 
-                     {/* video player */}
-                    <iframe width="560" 
-                            height="315" src={`https://emb.d.tube/#!/${author}/${link}`} 
-                            frameborder="2" allowfullscreen>
-                    </iframe>
-                </Box>
+                                <div className="flex float-right">
+                                    <div
+                                        className="close d-flex justify-content-center"
+                                        onClick={() => dispatch(stopVideoPlayer())}
+                                    >
+                                        {/* <UploadIcon className="h-10 w-10" /> */}
+                                    </div>
+                                    <div className="handle d-flex justify-content-center">
+                                        <PanToolRoundedIcon className="h-10 w-10" />
+                                    </div>
+                                </div>
+
+                                {/* video player */}
+                                <iframe 
+                                        type="text/html"
+                                        width={750}
+                                        height={350}
+                                        // style={{ width: "100%", height: "100%" }}
+                                        src={`https://emb.d.tube/#!/${author}/${link}`} 
+                                        frameborder="2" allowFullScreen>
+                                </iframe>
+                            </div>
+                {/* </Box> */}
+                        </ResizableBox>
+                </Draggable>
+                </div>
 
                 {/* <FeedController videos={videos}/> */}
 

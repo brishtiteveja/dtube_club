@@ -36,7 +36,11 @@ function Feed({ videos, layout }) {
       // s = s.toFixed(1)
 
       // t = m + ":" + s 
-      t = new Date(dur * 1000).toISOString().substring(14, 19)
+      try {
+        t = new Date(dur * 1000).toISOString().substring(14, 19)
+      } catch (e) {
+        console.log("Couldn't convert")
+      }
     }
 
     return t
@@ -58,7 +62,7 @@ function Feed({ videos, layout }) {
     if (video.json.ipfs && video.json.ipfs.snaphash) return 'https://snap1.d.tube/ipfs/' + video.json.ipfs.snaphash
     if (video.json.info && video.json.info.snaphash) return 'https://snap1.d.tube/ipfs/' + video.json.info.snaphash
         // console.log('Found video with no thumbnail!!', video)
-    return ''
+    return 'assets/DTube_files/images/DTube_Black.svg'
   }
 
   return (
@@ -144,7 +148,7 @@ function Feed({ videos, layout }) {
                                               src={getThumbnailUrl(video)}
                                               className="flex rounded-2xl m-5"
                                               alt="image"
-                                              height="400"
+                                              // height="400"
                                               width="400"
                                             />
 
