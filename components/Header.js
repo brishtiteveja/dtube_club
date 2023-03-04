@@ -111,6 +111,7 @@ function Header() {
                         className="flex w-[150px] h-[50px]"
                         src="/assets/DTube_files/images/DTube_Black.svg"
                         alt="dtube" 
+                        onClick={() => router.push('/')}
                     /> 
               </Link>
             </div>
@@ -126,13 +127,15 @@ function Header() {
               <div className="flex relative" onMouseEnter={() => setPopupOpen(true)} onMouseLeave={() => setPopupOpen(false)}>
                 <button className="flex">
                   {/* <UploadIcon className="flex w-10 h-10 mt-3 ml-10 text-black bg-gray-400" /> */}
-                  <UploadIcon className="flex group-hover:opacity-0 w-16 h-12 mt-2 ml-5 bg-lime-400 rounded-md hover:animate-bounce" />
+                  <UploadIcon className="flex group-hover:opacity-0 w-16 h-12 mt-2 ml-5 bg-lime-400 rounded-md hover:animate-bounce" 
+                    onClick={() => router.push('/upload')}
+                  />
                 </button>
                 {/* {
                   ({ popupOpen }) => 
                   (
                     <>
-                    <span class="flex opacity-100 w-32 h-30 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
+                    <span className="flex opacity-100 w-32 h-30 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
                           font-medium rounded-xl absolute left-1/2 -translate-x-1/2 translate-y-10">
                             Upload your content
                     </span>
@@ -174,7 +177,7 @@ function Header() {
                             <span className="ml-1">
                               DTC
                             </span>
-                            {/* <span class="flex group-hover:opacity-100 w-80 h-30 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
+                            {/* <span className="flex group-hover:opacity-100 w-80 h-30 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
                             font-medium rounded-xl absolute left-1/2 -translate-x-1/2 translate-y-5 opacity-0">
                               DTUBE Coin balance - Hold more of it to generate more Voting Power. You can burn it to promote your videos and comments.
                             </span> */}
@@ -183,7 +186,7 @@ function Header() {
                           {/* voting power */}
                           <div className="hidden md:block group relative flex p-2 m-1 mt-3 h-10 rounded bg-orange-100 hover:bg-orange-400">
                             <span className="font-bold text-blue-900"> {processVotingPower(session.user.vt.v)}M VP</span>
-                            {/* <span class="flex group-hover:opacity-100 w-80 h-35 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
+                            {/* <span className="flex group-hover:opacity-100 w-80 h-35 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
                             font-medium rounded-xl absolute left-1/2 -translate-x-1/2 translate-y-5 opacity-0">
                               Voting Power - Bound to your account, you need to use it when you vote or add new content. Hold on to your DTCs to become more powerful and influent in the network!
                             </span> */}
@@ -272,7 +275,7 @@ function Header() {
                         {/* notifications */}
                         <div className="flex group relative">
                             <BellIcon className="flex w-10 h-10 mt-3 ml-5 bg-gray-400 rounded-xl hover:cursor-pointer hover:bg-red-500 hover:scale-105"/>
-                            <span class="flex group-hover:opacity-100 w-8 h-10 m-4 p-2 transition-opacity bg-red-500 px-1 text-black 
+                            <span className="flex group-hover:opacity-100 w-8 h-10 m-4 p-2 transition-opacity bg-red-500 px-1 text-black 
                               font-medium rounded-xl absolute left-1/2 translate-x-1 -translate-y-5 opacity-0 font-bold justify-center">
                                 {notifications.length}
                             </span>
@@ -351,12 +354,12 @@ function Header() {
 
                                   <div className="mt-4">
                                       {/* divider */}
-                                      <div class="relative flex py-1 items-center">
-                                          <div class="flex-grow border-t border-gray-500"></div>
-                                          {/* <span class="flex-shrink mx-4 text-gray-500">
+                                      <div className="relative flex py-1 items-center">
+                                          <div className="flex-grow border-t border-gray-500"></div>
+                                          {/* <span className="flex-shrink mx-4 text-gray-500">
                                           
                                           </span> */}
-                                          <div class="flex-grow border-t border-gray-500"></div>
+                                          <div className="flex-grow border-t border-gray-500"></div>
                                       </div>
                                   </div>
                               </div>

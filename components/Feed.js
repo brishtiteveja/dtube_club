@@ -13,7 +13,7 @@ function Feed({ videos, layout }) {
   const gridIframe = useRef(null);
 
   const videoSl = videos
-  console.log(videos)
+  //console.log(videos)
   const geoUrl =
   "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
 
@@ -43,15 +43,35 @@ function Feed({ videos, layout }) {
       }
     }
 
+    if (t.includes("NaN:NaN")) {
+      t = "\"\""
+    }
+
     return t
 
   }
 
+  const getVotes = (votes) => {
+    let vt = votes.reduce((a, c) => ({ vt: a.vt + c.vt })).vt / 1000000
+    let v = vt.toFixed(1)
+    if (v === "0.0" || v === "-0.0") {
+      return "0"
+    }
+
+    return v
+  }
+
   const getThumbnailUrl = (video) => {
     if (!video || !video.json)
-        return ''
-    if (video.json.thumbnailUrl)
-        return video.json.thumbnailUrl
+      return 'assets/DTube_files/images/DTube_Black.svg'
+    if (video.json.thumbnailUrl) {
+      if (!video.json.thumbnailUrl.includes('btfs') || 
+          !video.json.thumbnailUrl.includes('ipfs') || 
+          !video.json.thumbnailUrl.includes('youtube') ) { 
+        return 'assets/DTube_files/images/DTube_Black.svg'
+      }
+    }
+
     if (video.json.files && video.json.files.btfs && video.json.files.btfs.img && video.json.files.btfs.img["118"])
         return 'https://btfs.d.tube/btfs/' + video.json.files.btfs.img["118"]
     if (video.json.files && video.json.files.ipfs && video.json.files.ipfs.img && video.json.files.ipfs.img["118"])
@@ -147,13 +167,13 @@ function Feed({ videos, layout }) {
                                               width="400"
                                             />
 
-                                            <div className="">
-                                              <span className="absolute -mt-14 md:-mt-14  ml-10 md:ml-10 bg-black opacity-50 text-white p-0.5 rounded-sm">
+                                            <div className="flex-auto">
+                                              <span className="absolute -mt-14 md:-mt-14  ml-6 md:ml-8 h-6 bg-black opacity-50 text-white text-sm p-0.5 rounded-sm">
                                                 { getTimeDuration(video.json.dur) }
                                               </span>
 
-                                              <span className="hidden lg:block absolute -mt-14 lg:ml-48 bg-black opacity-50 text-white p-0.5 rounded-sm truncate">
-                                                <FlashOn className="scale-75" /> { (video.votes.reduce((a, c) => ({ vt: a.vt + c.vt })).vt / 1000000).toFixed(1) } M
+                                              <span className="hidden lg:block absolute -mt-14 lg:ml-36 h-6 bg-black opacity-50 text-white text-sm p-0.5 rounded-sm truncate">
+                                                <FlashOn className="scale-75" /> { getVotes(video.votes) } M
                                               </span>
 
                                             </div>
