@@ -66,7 +66,7 @@ function Feed({ videos, layout }) {
   }
 
   return (
-    <div className="flex-grow h-screen ml-10 mr-10 pl-10 pr-10 overflow-y-auto scrollbar-hide">
+    <div className="flex-grow h-screen ml-0 md:ml-10 mr-10 pl-0 md:pl-10 pr-0 md:pr-10 overflow-y-auto scrollbar-hide">
       <div className="mx-auto"> 
         {
           (
@@ -113,12 +113,8 @@ function Feed({ videos, layout }) {
               }
               else if (layout === 'grid') {
                 return(
-                  <Box
-                    width="100%" mx="auto" my={4}
-                  >
                     <SimpleGrid 
-                      columns={4} 
-                      spacingx='100px'
+                      columns={ {base: 2, sm: 2, md: 4, lg: 6} }
                     >
                       {videoSl &&
                         videoSl.map((video) => {
@@ -146,20 +142,19 @@ function Feed({ videos, layout }) {
                                         <div className="flex-col">
                                             <img 
                                               src={getThumbnailUrl(video)}
-                                              className="flex rounded-2xl m-5"
+                                              className="flex rounded-2xl m-5 h-[100px] sm:h-[100px] md:h-[150px]"
                                               alt="image"
-                                              // height="400"
                                               width="400"
                                             />
 
-                                            <div>
-                                            <span className="absolute -mt-14  ml-10 bg-black opacity-50 text-white p-0.5 rounded-sm">
-                                              { getTimeDuration(video.json.dur) }
-                                            </span>
+                                            <div className="">
+                                              <span className="absolute -mt-14 md:-mt-14  ml-10 md:ml-10 bg-black opacity-50 text-white p-0.5 rounded-sm">
+                                                { getTimeDuration(video.json.dur) }
+                                              </span>
 
-                                            <span className="absolute -mt-14  ml-56 bg-black opacity-50 text-white p-0.5 rounded-sm">
-                                              <FlashOn className="scale-75" /> { (video.votes.reduce((a, c) => ({ vt: a.vt + c.vt })).vt / 1000000).toFixed(1) } M
-                                            </span>
+                                              <span className="hidden lg:block absolute -mt-14 lg:ml-48 bg-black opacity-50 text-white p-0.5 rounded-sm truncate">
+                                                <FlashOn className="scale-75" /> { (video.votes.reduce((a, c) => ({ vt: a.vt + c.vt })).vt / 1000000).toFixed(1) } M
+                                              </span>
 
                                             </div>
 
@@ -168,7 +163,7 @@ function Feed({ videos, layout }) {
                                       {/* </a> */}
                                       {/* video title */}
                                       <div className="ml-6 -mt-5 max-w-sm">
-                                        <span className="font-semibold font-sans"> {video.json.title} </span>
+                                        <span className="font-semibold font-sans line-clamp-2 sm:line-clamp-1 lg:line-clamp-2"> {video.json.title} </span>
                                       </div>
                                   </div>
 
@@ -186,7 +181,6 @@ function Feed({ videos, layout }) {
                         })
                       }
                     </SimpleGrid>
-                  </Box>
                 )
               } else if (layout === 'list') {
                 return(
@@ -213,7 +207,7 @@ function Feed({ videos, layout }) {
                                         {/* videosnapimage */}
                                         <img 
                                           src={getThumbnailUrl(video)}
-                                          className="flex rounded-2xl m-5"
+                                          className="flex rounded-2xl m-5 h-20"
                                           alt="image"
                                           height="400"
                                           width="400"
@@ -266,7 +260,7 @@ function Feed({ videos, layout }) {
                                         {/* videosnapimage */}
                                         <img 
                                           src={getThumbnailUrl(video)}
-                                          className="flex rounded-2xl m-5"
+                                          className="flex rounded-2xl m-5 h-56"
                                           alt="image"
                                           height="400"
                                           width="400"

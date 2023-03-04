@@ -42,12 +42,12 @@ const FeedHeader = ( {contentType, setContentType, setContent, setLayout}) => {
     }
 
     return (
-        <header className="flex flex-grow h-16 bg-white p-2 rounded-xl space-x-20 justify-end">
+        <header className="flex flex-grow h-10 md:h-16 bg-white p-2 rounded-xl space-x-20 justify-end">
             {/* left */}
             <FeedHeaderMenu contentType={contentType} setContentType={setContentType} setContent={setContent}/>
 
             {/* center */}
-            <div className="flex border-2 rounded-xl float-right">
+            <div className="flex md:border-2 md:rounded-xl float-right">
                 {/* Right */}
                 <div className="flex items-center">
                     <HeaderIcon Icon={RefreshIcon} onClick={handleReloadContent}/>
@@ -55,7 +55,7 @@ const FeedHeader = ( {contentType, setContentType, setContent, setLayout}) => {
             </div> 
 
             {/* right */}
-            <div className="flex border-2 rounded-xl float-right">
+            <div className="flex md:border-2 md:rounded-xl float-right">
                 {/* Right */}
                 <div className="flex items-center space-x-4">
                     <HeaderIcon Icon={GridOnOutlined} onClick={handleGridLayout}/>

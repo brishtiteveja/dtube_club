@@ -103,26 +103,24 @@ function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-green-300 flex items-center p-2 lg:px-5 shadow-md">
-      <div className="flex flex-grow m-1 justify-evenly">
+      <div className="flex flex-wrap md:flex-grow m-1 justify-left md:justify-evenly">
             {/* Left */}
-            <div className="flex">
+            <div className="flex flex-wrap">
               <Link href="/" className="flex rounded-md bg-cyan-50 p-2 hover:scale-125 hover:bg-emerald-100">
-                    <Image
-                        className="flex"
+                    <img
+                        className="flex w-[150px] h-[50px]"
                         src="/assets/DTube_files/images/DTube_Black.svg"
                         alt="dtube" 
-                        width={100} 
-                        height={50}
                     /> 
               </Link>
             </div>
 
             {/* center  */}
-            <div className="flex">
+            <div className="flex flex-wrap">
               {/* search bar */}
               <div>
                 <SearchIcon className="hidden h-6 text-gray-600" />
-                <input className="flex p-5 m-3 ml-60 h-10 w-96 bg-white outline-none placeholder-gray-500"
+                <input className="flex mt-5 mb-2 p-2 md:p-5 md:m-3 md:ml-60 h-10 w-64 md:w-96 bg-white outline-none placeholder-gray-500"
               placeholder="Search Dtube"/>
               </div>
               <div className="flex relative" onMouseEnter={() => setPopupOpen(true)} onMouseLeave={() => setPopupOpen(false)}>
@@ -145,7 +143,7 @@ function Header() {
             </div>
 
             {/* right */}
-            <div className="flex">
+            <div className="flex flex-wrap">
               {
                 !session && 
                     <div className="flex">
@@ -183,7 +181,7 @@ function Header() {
                           </div>
 
                           {/* voting power */}
-                          <div className="group relative flex p-2 m-1 mt-3 h-10 rounded bg-orange-100 hover:bg-orange-400">
+                          <div className="hidden md:block group relative flex p-2 m-1 mt-3 h-10 rounded bg-orange-100 hover:bg-orange-400">
                             <span className="font-bold text-blue-900"> {processVotingPower(session.user.vt.v)}M VP</span>
                             {/* <span class="flex group-hover:opacity-100 w-80 h-35 m-4 p-2 transition-opacity bg-emerald-200 px-1 text-black 
                             font-medium rounded-xl absolute left-1/2 -translate-x-1/2 translate-y-5 opacity-0">
@@ -215,7 +213,7 @@ function Header() {
                                   src={session.user.json.profile.avatar}
                                   alt="profile" 
                                 /> 
-                                <span className = "flex p-1 mt-3">
+                                <span className = "flex p-1 mt-3 truncate">
                                   {session.user.username}
                                 </span>
                               </div>
@@ -244,7 +242,7 @@ function Header() {
                         </div>
 
                         {/* Add socials and accounts */}
-                        <div className="flex">
+                        <div className="flex hidden md:block">
                           <Dropdown
                             className="flex"
                             arrowIcon={true}
