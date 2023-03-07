@@ -227,15 +227,13 @@ function Feed({ videos, layout }) {
                                         {/* videosnapimage */}
                                         <img 
                                           src={getThumbnailUrl(video)}
-                                          className="flex rounded-2xl m-5 h-20"
-                                          alt="image"
-                                          height="400"
-                                          width="400"
+                                          className="flex rounded-2xl m-5 sm:h-[100px] lg:h-[200px] sm:w-[200px] lg:w-[400px]"
+                                          alt="Dtube"
                                         />
                                       </a>
                                       {/* video title */}
                                       <div className="ml-6 -mt-5 max-w-sm">
-                                        <span className="font-semibold font-sans"> {video.json.title} </span>
+                                        <span className="font-semibold font-sans line-clamp-2 sm:line-clamp-1 lg:line-clamp-2"> {video.json.title} </span>
                                       </div>
                                   </div>
 
@@ -290,7 +288,7 @@ function Feed({ videos, layout }) {
 
                                   {/* video title */}
                                   <div className="ml-6 -mt-5 max-w-sm">
-                                    <span className="font-semibold font-sans flex-wrap"> {video.json.title} </span>
+                                    <span className="font-semibold font-sans flex-wrap line-clamp-2 sm:line-clamp-1 lg:line-clamp-2"> {video.json.title} </span>
                                   </div>
 
                                   {/* video author */}
